@@ -1,0 +1,7 @@
+﻿  csucsmatrix.cpp
+C:\Users\Franca\Desktop\csucsmatrix\csucsmatrix\csucsmatrix\csucsmatrix.cpp(32,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Franca\Desktop\csucsmatrix\csucsmatrix\csucsmatrix\csucsmatrix.cpp(43,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Franca\Desktop\csucsmatrix\csucsmatrix\csucsmatrix\csucsmatrix.cpp(45,25): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Franca\Desktop\csucsmatrix\csucsmatrix\csucsmatrix\csucsmatrix.cpp(90,24): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Franca\Desktop\csucsmatrix\csucsmatrix\csucsmatrix\csucsmatrix.cpp(121,24): warning C4018: '<': signed/unsigned mismatch
+  csucsmatrix.vcxproj -> C:\Users\Franca\Desktop\csucsmatrix\csucsmatrix\Debug\csucsmatrix.exe
