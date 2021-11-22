@@ -4,6 +4,8 @@ using namespace std;
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
+#include <queue>
+#include <stack>
 
 /*
 6 7
@@ -118,21 +120,138 @@ public:
 	}
 	bool connected()
 	{
-		for (size_t i = 0; i < N; i++)
-		{
-			int sum = 0;
-			for (size_t j = 0; j < csucsmatrix->at(i).size(); j++)
-			{
-				sum += csucsmatrix->at(i)[j];
-			}
-			if (sum == 0) return 0;
-		}
-		return 1;
+		//cerr << N << " " << count(0, [](int x) {return true; }) << endl;
+		return N == count(0, [](int x) {return true; });
 	}
-	int find(bool (*predicate)(int));
-	int count(bool (*predicate)(int));
-	int where(bool (*predicate)(int));
-	vector<int> shortest_path(int a, int b);
+	int find(int csucs, bool (*predicate)(int))
+	{
+		queue<int> toDo;
+		vector<char> cols(N, 'w');
+		toDo.push(csucs);
+		
+		while (!toDo.empty())
+		{
+			int cTask = toDo.front();
+			toDo.pop();
+			if (predicate(cTask))
+			{
+				return cTask;
+			}
+			cols[cTask] = 'b';
+
+			for (size_t i = 0; i < N; i++)
+			{
+				if (csucsmatrix->at(i)[cTask]&&cols[i]=='w')
+				{
+					toDo.push(i);
+					cols[i] = 'g';
+				}
+			}
+
+		}
+
+
+		return -1;
+	}
+	int count(int csucs, bool (*predicate)(int))
+	{
+		queue<int> toDo;
+		int cunt = 0;
+		vector<char> cols(N, 'w');
+		toDo.push(csucs);
+
+		while (!toDo.empty())
+		{
+			int cTask = toDo.front();
+			toDo.pop();
+			if (predicate(cTask))
+			{
+				++cunt;
+			}
+			cols[cTask] = 'b';
+
+			for (size_t i = 0; i < N; i++)
+			{
+				if (csucsmatrix->at(i)[cTask] && cols[i] == 'w')
+				{
+					toDo.push(i);
+					cols[i] = 'g';
+				}
+			}
+		}
+
+
+		return cunt;
+	}
+	vector<int> where(int csucs, bool (*predicate)(int))
+	{
+		queue<int> toDo;
+		vector<char> cols(N, 'w');
+		toDo.push(csucs);
+		vector<int> hol;
+
+		while (!toDo.empty())
+		{
+			int cTask = toDo.front();
+			toDo.pop();
+			if (predicate(cTask))
+			{
+				hol.push_back(cTask);
+			}
+			cols[cTask] = 'b';
+
+			for (size_t i = 0; i < N; i++)
+			{
+				if (csucsmatrix->at(i)[cTask] && cols[i] == 'w')
+				{
+					toDo.push(i);
+					cols[i] = 'g';
+				}
+			}
+
+		}
+
+
+		return hol;
+	}
+	
+	
+	//todo
+	vector<int> shortest_path(int a, int b)
+	{
+		stack<int> toDo;
+		vector<char> cols(N, 'w');
+		toDo.push(a);
+		vector<int> ut;
+
+		while (!toDo.empty())
+		{
+			int cTask = toDo.top();
+			toDo.pop();
+			if (cTask==b)
+			{
+				return ut;
+			}
+			cols[cTask] = 'b';
+			for (size_t i = 0; i < N; i++)
+			{
+				
+				if (csucsmatrix->at(i)[cTask] && cols[i] == 'w')
+				{
+					ut.push_back(cTask);
+					toDo.push(i);
+					cols[i] = 'g';
+				}
+				else if (!ut.empty())
+				{
+					ut.pop_back();
+				}
+				
+			}
+
+		}
+		
+	}
 	~Csucsmatrix()
 	{
 	}
@@ -146,8 +265,18 @@ int main()
 {
 	Csucsmatrix csucs;
 	cerr << endl;
+	for (auto& i : csucs.shortest_path(0, 4))
+	{
+		cerr << i << " ";
+	}
+	
+	/*for (auto& i : csucs.where(0, [](int x) {return x%2==0;}))
+	{
+		cerr << i << " ";
+	}*/
+	//cerr << csucs.count(1, [](int x) {return x % 2 == 0 && x<3; });
 	//csucs.add_node();
-	cerr<<csucs.connected();
+	//cerr<<csucs.connected();
 	//cerr << csucs.isolated(6);
 	//csucs.add_edge(4, 4);
 	//cerr << csucs.loop(4) << endl;
