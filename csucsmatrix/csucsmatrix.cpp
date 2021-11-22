@@ -214,43 +214,60 @@ public:
 
 		return hol;
 	}
-	
-	
-	//todo
 	vector<int> shortest_path(int a, int b)
 	{
-		stack<int> toDo;
+		queue<int> toDo;
 		vector<char> cols(N, 'w');
 		toDo.push(a);
-		vector<int> ut;
+		stack<int> ut;
+		vector<int>short_path;
+		vector<int> honnan(N, -1);
 
 		while (!toDo.empty())
 		{
-			int cTask = toDo.top();
+			int cTask = toDo.front();
 			toDo.pop();
 			if (cTask==b)
 			{
-				return ut;
+				int temp = b;
+				ut.push(b);
+				while (true)
+				{
+					if (temp==0)
+					{
+						break;
+					}
+					int tmp;
+					tmp = honnan[temp];
+					ut.push(tmp);
+					temp = tmp;
+				}
+				while (!ut.empty())
+				{
+					short_path.push_back(ut.top());
+					ut.pop();
+				}
+				return short_path;
 			}
+
 			cols[cTask] = 'b';
 			for (size_t i = 0; i < N; i++)
 			{
-				
 				if (csucsmatrix->at(i)[cTask] && cols[i] == 'w')
 				{
-					ut.push_back(cTask);
+					honnan[i]=cTask;
 					toDo.push(i);
 					cols[i] = 'g';
-				}
-				else if (!ut.empty())
-				{
-					ut.pop_back();
 				}
 				
 			}
 
 		}
 		
+	}
+	int distance(int a, int b)
+	{
+		return shortest_path(a, b).size()-1;
 	}
 	~Csucsmatrix()
 	{
@@ -265,11 +282,13 @@ int main()
 {
 	Csucsmatrix csucs;
 	cerr << endl;
-	for (auto& i : csucs.shortest_path(0, 4))
+	/*csucs.remove_edge(1, 3);
+	for (auto& i : csucs.shortest_path(0, 5))
 	{
 		cerr << i << " ";
 	}
-	
+	cerr << endl;
+	cerr << csucs.distance(0, 5);*/
 	/*for (auto& i : csucs.where(0, [](int x) {return x%2==0;}))
 	{
 		cerr << i << " ";
