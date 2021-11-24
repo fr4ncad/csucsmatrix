@@ -231,12 +231,8 @@ public:
 			{
 				int temp = b;
 				ut.push(b);
-				while (true)
+				while (temp==a)
 				{
-					if (temp==0)
-					{
-						break;
-					}
 					int tmp;
 					tmp = honnan[temp];
 					ut.push(tmp);
